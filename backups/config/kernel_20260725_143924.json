@@ -1,0 +1,7 @@
+{
+    "version": 1,
+    "kernel_name": "Velthor Kernel",
+    "kernel_version": "1.0.0-alpha",
+    "system_name": "J.A.R.V.I.S.",
+    "environment": "development"
+}

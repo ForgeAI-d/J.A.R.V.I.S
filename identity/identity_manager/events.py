@@ -1,0 +1,5 @@
+"""Event names emitted by IdentityManager."""
+INITIALIZED = "identity.identity_manager.initialized"
+STARTED = "identity.identity_manager.started"
+STOPPED = "identity.identity_manager.stopped"
+FAILED = "identity.identity_manager.failed"

@@ -1,0 +1,5 @@
+"""Event names emitted by CommandManager."""
+INITIALIZED = "assistant.command_manager.initialized"
+STARTED = "assistant.command_manager.started"
+STOPPED = "assistant.command_manager.stopped"
+FAILED = "assistant.command_manager.failed"

@@ -1,0 +1,1 @@
+class DiscoveryError(RuntimeError): pass

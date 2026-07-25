@@ -1,0 +1,8 @@
+{
+    "boot_mode": "testing",
+    "version": 1,
+    "safe_mode": true,
+    "parallel_boot": false,
+    "strict_dependencies": false,
+    "fallback_boot_order": true
+}

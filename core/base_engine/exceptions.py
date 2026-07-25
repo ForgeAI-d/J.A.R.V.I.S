@@ -1,0 +1,2 @@
+class BaseEngineError(RuntimeError):
+    pass

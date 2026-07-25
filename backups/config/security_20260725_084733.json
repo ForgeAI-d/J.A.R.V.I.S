@@ -1,0 +1,7 @@
+{
+    "version": 1,
+    "safe_mode": false,
+    "panic_mode": false,
+    "auto_lock": true,
+    "require_admin_approval": true
+}

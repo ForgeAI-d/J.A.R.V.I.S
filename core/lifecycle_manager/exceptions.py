@@ -1,0 +1,1 @@
+class LifecycleManagerError(RuntimeError): pass

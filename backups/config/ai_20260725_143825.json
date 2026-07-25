@@ -1,0 +1,7 @@
+{
+    "version": 1,
+    "local_models": true,
+    "allow_cloud_models": false,
+    "model_update_suggestions": true,
+    "auto_deploy_updates": false
+}

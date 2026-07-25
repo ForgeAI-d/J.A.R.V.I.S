@@ -1,0 +1,5 @@
+"""Event names emitted by CameraManager."""
+INITIALIZED = "vision.camera_manager.initialized"
+STARTED = "vision.camera_manager.started"
+STOPPED = "vision.camera_manager.stopped"
+FAILED = "vision.camera_manager.failed"

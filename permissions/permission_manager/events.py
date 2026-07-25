@@ -1,0 +1,5 @@
+"""Event names emitted by PermissionManager."""
+INITIALIZED = "permissions.permission_manager.initialized"
+STARTED = "permissions.permission_manager.started"
+STOPPED = "permissions.permission_manager.stopped"
+FAILED = "permissions.permission_manager.failed"

@@ -1,0 +1,5 @@
+"""Event names emitted by FaceManager."""
+INITIALIZED = "vision.face_manager.initialized"
+STARTED = "vision.face_manager.started"
+STOPPED = "vision.face_manager.stopped"
+FAILED = "vision.face_manager.failed"

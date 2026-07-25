@@ -1,0 +1,10 @@
+{
+    "jarvis_name": "JARVIS",
+    "default_state": "NORMAL",
+    "panic_mode_enabled": true,
+    "backup_interval_hours": 24,
+    "smart_home_enabled": true,
+    "voice_enabled": false,
+    "debug_mode": false,
+    "log_level": "INFO"
+}

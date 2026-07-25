@@ -1,0 +1,1 @@
+class KernelRuntimeError(RuntimeError): pass

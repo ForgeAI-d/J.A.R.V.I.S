@@ -1,0 +1,5 @@
+"""Event names emitted by MemoryManager."""
+INITIALIZED = "memory.memory_manager.initialized"
+STARTED = "memory.memory_manager.started"
+STOPPED = "memory.memory_manager.stopped"
+FAILED = "memory.memory_manager.failed"

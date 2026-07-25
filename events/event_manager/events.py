@@ -1,0 +1,5 @@
+"""Event names emitted by EventManager."""
+INITIALIZED = "events.event_manager.initialized"
+STARTED = "events.event_manager.started"
+STOPPED = "events.event_manager.stopped"
+FAILED = "events.event_manager.failed"

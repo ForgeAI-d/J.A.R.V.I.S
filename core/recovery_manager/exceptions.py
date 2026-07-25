@@ -1,0 +1,1 @@
+class RecoveryManagerError(RuntimeError): pass

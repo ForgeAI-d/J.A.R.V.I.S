@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "log_path": "logs",
+    "level": "INFO",
+    "console_logging": true,
+    "file_logging": true,
+    "json_logging": true
+}

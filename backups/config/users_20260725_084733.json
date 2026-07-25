@@ -1,0 +1,6 @@
+{
+    "version": 1,
+    "default_user": "admin",
+    "multi_user": true,
+    "guest_access": false
+}

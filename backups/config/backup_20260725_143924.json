@@ -1,0 +1,6 @@
+{
+    "version": 1,
+    "backup_path": "backups",
+    "auto_backup": true,
+    "backup_on_boot": false
+}

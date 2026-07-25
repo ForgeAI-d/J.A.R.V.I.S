@@ -1,0 +1,5 @@
+"""Event names emitted by VisionManager."""
+INITIALIZED = "vision.vision_manager.initialized"
+STARTED = "vision.vision_manager.started"
+STOPPED = "vision.vision_manager.stopped"
+FAILED = "vision.vision_manager.failed"

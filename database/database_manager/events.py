@@ -1,0 +1,5 @@
+"""Event names emitted by DatabaseManager."""
+INITIALIZED = "database.database_manager.initialized"
+STARTED = "database.database_manager.started"
+STOPPED = "database.database_manager.stopped"
+FAILED = "database.database_manager.failed"

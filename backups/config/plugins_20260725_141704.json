@@ -1,0 +1,6 @@
+{
+    "version": 1,
+    "plugin_path": "plugins",
+    "auto_discover": true,
+    "allow_unsigned_plugins": false
+}

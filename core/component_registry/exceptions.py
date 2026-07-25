@@ -1,0 +1,1 @@
+class ComponentRegistryError(RuntimeError): pass

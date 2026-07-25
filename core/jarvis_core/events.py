@@ -1,0 +1,5 @@
+"""Event names emitted by JarvisCore."""
+INITIALIZED = "core.jarvis_core.initialized"
+STARTED = "core.jarvis_core.started"
+STOPPED = "core.jarvis_core.stopped"
+FAILED = "core.jarvis_core.failed"

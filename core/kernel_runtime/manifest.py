@@ -1,0 +1,1 @@
+MANIFEST={"component_id":"core.kernel_runtime","name":"Kernel Runtime","version":"1.0.0","kind":"kernel","priority":0,"auto_start":False,"schema_version":"1.0","requires":["core.boot_loader"],"optional":[]}

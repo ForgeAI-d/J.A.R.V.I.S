@@ -1,0 +1,2 @@
+class BaseManagerError(RuntimeError):
+    pass

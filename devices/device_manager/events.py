@@ -1,0 +1,5 @@
+"""Event names emitted by DeviceManager."""
+INITIALIZED = "devices.device_manager.initialized"
+STARTED = "devices.device_manager.started"
+STOPPED = "devices.device_manager.stopped"
+FAILED = "devices.device_manager.failed"
