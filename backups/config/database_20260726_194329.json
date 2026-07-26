@@ -1,0 +1,6 @@
+{
+    "version": 1,
+    "database_path": "data/jarvis.db",
+    "auto_migrate": true,
+    "backup_before_migration": true
+}
