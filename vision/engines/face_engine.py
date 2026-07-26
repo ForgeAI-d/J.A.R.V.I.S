@@ -3,8 +3,15 @@ import os
 import uuid
 from datetime import datetime, UTC
 
-import face_recognition
-import numpy as np
+try:
+    import face_recognition
+except ImportError:
+    face_recognition = None
+
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
 from core.base_engine import BaseEngine
 
@@ -20,10 +27,9 @@ class FaceEngine(BaseEngine):
     AUTO_START = True
     PRIORITY = 100
 
-    REQUIRES = [
-        "face_recognition",
-        "numpy"
-    ]
+    # Python packages are optional runtime capabilities, not kernel components.
+    REQUIRES = []
+    OPTIONAL_PACKAGES = ("face_recognition", "numpy")
 
     OPTIONAL = [
         "DatabaseManager",
@@ -68,11 +74,29 @@ class FaceEngine(BaseEngine):
             exist_ok=True
         )
 
+    @property
+    def backend_available(self):
+        return face_recognition is not None and np is not None
+
+    def _require_backend(self):
+        if self.backend_available:
+            return
+        missing = []
+        if face_recognition is None:
+            missing.append("face_recognition")
+        if np is None:
+            missing.append("numpy")
+        raise RuntimeError(
+            "FaceEngine backend unavailable; install optional dependencies: "
+            + ", ".join(missing)
+        )
+
     def process_frame(
         self,
         frame,
         camera_id="default"
     ):
+        self._require_backend()
         self.frames_processed += 1
 
         face_locations = face_recognition.face_locations(
@@ -160,6 +184,7 @@ class FaceEngine(BaseEngine):
         self,
         unknown_encoding
     ):
+        self._require_backend()
         if self.db is None:
             return None
 
@@ -244,6 +269,7 @@ class FaceEngine(BaseEngine):
         image_path,
         profile_name="default"
     ):
+        self._require_backend()
         if self.db is None:
             return None
 

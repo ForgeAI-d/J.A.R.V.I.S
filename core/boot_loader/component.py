@@ -53,6 +53,9 @@ class BootLoader(BaseKernelComponent):
         "core.task_manager", "core.health_monitor", "core.module_manager",
     )
     DEFAULT_SEARCH_PACKAGES = (
+        # Infrastructure services must be discovered before application managers
+        # so constructor injection can resolve dependencies deterministically.
+        "database",
         "vision", "voice", "security", "automation", "learning", "plugins",
         "identity", "memory", "communication", "devices", "events", "permissions",
     )

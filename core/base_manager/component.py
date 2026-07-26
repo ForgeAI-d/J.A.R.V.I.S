@@ -29,10 +29,19 @@ class BaseManager(BaseKernelComponent):
     ]
 
     def __init__(self, context: Any | None = None) -> None:
-        self.COMPONENT_ID = self.MANAGER_ID
+        # A concrete manager may define only COMPONENT_ID.  In that case the
+        # inherited BaseManager.MANAGER_ID ("base.manager") must not overwrite
+        # the concrete identifier during construction.
+        manager_id = (
+            self.__class__.__dict__.get("MANAGER_ID")
+            or self.__class__.__dict__.get("COMPONENT_ID")
+            or self.COMPONENT_ID
+        )
+        self.MANAGER_ID = manager_id
+        self.COMPONENT_ID = manager_id
         super().__init__(context=context)
-        self.manager_id = self.MANAGER_ID
-        self.component_id = self.manager_id
+        self.manager_id = manager_id
+        self.component_id = manager_id
         self.status = "OFFLINE"
         self.engines: dict[str, Any] = {}
 

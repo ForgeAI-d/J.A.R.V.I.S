@@ -4,9 +4,20 @@ import json
 import os
 from datetime import datetime, timezone
 
-import numpy as np
-import face_recognition
-import cv2
+try:
+    import numpy as np
+except ImportError:
+    np = None
+
+try:
+    import face_recognition
+except ImportError:
+    face_recognition = None
+
+try:
+    import cv2
+except ImportError:
+    cv2 = None
 
 
 class FaceManager(BaseManager):
@@ -31,12 +42,40 @@ class FaceManager(BaseManager):
             exist_ok=True
         )
 
+    @property
+    def backend_available(self):
+        return face_recognition is not None and np is not None
+
+    def _require_backend(self):
+        if self.backend_available:
+            return
+        missing = []
+        if face_recognition is None:
+            missing.append("face_recognition")
+        if np is None:
+            missing.append("numpy")
+        raise RuntimeError(
+            "FaceManager backend unavailable; install optional dependencies: "
+            + ", ".join(missing)
+        )
+
+    def get_status(self):
+        status = super().get_status()
+        status["backend_available"] = self.backend_available
+        status["optional_dependencies"] = {
+            "face_recognition": face_recognition is not None,
+            "numpy": np is not None,
+            "cv2": cv2 is not None,
+        }
+        return status
+
     def register_face(
         self,
         user_id,
         image_path,
         profile_name="default"
     ):
+        self._require_backend()
         image = face_recognition.load_image_file(
             image_path
         )
@@ -158,6 +197,7 @@ class FaceManager(BaseManager):
         image_path,
         tolerance=0.6
     ):
+        self._require_backend()
         image = face_recognition.load_image_file(
             image_path
         )
