@@ -1,8 +1,12 @@
-from core.base_manager import BaseManager
-import os
-from datetime import datetime, UTC
+from __future__ import annotations
 
-import cv2
+import importlib
+import importlib.util
+import os
+from datetime import UTC, datetime
+from types import ModuleType
+
+from core.base_manager import BaseManager
 
 
 class CameraManager(BaseManager):
@@ -25,6 +29,23 @@ class CameraManager(BaseManager):
             exist_ok=True
         )
 
+    @property
+    def backend_available(self) -> bool:
+        return importlib.util.find_spec("cv2") is not None
+
+    def _require_backend(self) -> ModuleType:
+        if not self.backend_available:
+            raise RuntimeError(
+                "CameraManager backend unavailable; install optional dependency: cv2"
+            )
+        return importlib.import_module("cv2")
+
+    def get_status(self):
+        status = super().get_status()
+        status["backend_available"] = self.backend_available
+        status["optional_dependencies"] = {"cv2": self.backend_available}
+        return status
+
     def register_camera(
         self,
         camera_id,
@@ -45,6 +66,7 @@ class CameraManager(BaseManager):
         self,
         source=0
     ):
+        cv2 = self._require_backend()
         camera = cv2.VideoCapture(source)
 
         status = camera.isOpened()
@@ -58,6 +80,7 @@ class CameraManager(BaseManager):
         camera_id=None,
         source=0
     ):
+        cv2 = self._require_backend()
         if camera_id is not None:
             camera_config = self.cameras.get(camera_id)
 
@@ -86,6 +109,7 @@ class CameraManager(BaseManager):
         source=0,
         filename=None
     ):
+        cv2 = self._require_backend()
         frame = self.capture_frame(
             camera_id=camera_id,
             source=source

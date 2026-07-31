@@ -1,25 +1,52 @@
-from core.base_manager import BaseManager
-import uuid
+from __future__ import annotations
+
+import importlib
+import importlib.util
 import json
 import os
+import uuid
 from datetime import datetime, timezone
+from types import ModuleType
 
-try:
-    import numpy as np
-except ImportError:
-    np = None
-
-try:
-    import face_recognition
-except ImportError:
-    face_recognition = None
-
-try:
-    import cv2
-except ImportError:
-    cv2 = None
+from core.base_manager import BaseManager
 
 
+class _FaceBackend:
+    def __init__(self) -> None:
+        self._face_recognition: ModuleType | None = None
+        self._numpy: ModuleType | None = None
+
+    @staticmethod
+    def package_available(package_name: str) -> bool:
+        return importlib.util.find_spec(package_name) is not None
+
+    @property
+    def missing_packages(self) -> list[str]:
+        return [
+            name
+            for name in ("numpy", "face_recognition", "face_recognition_models")
+            if not self.package_available(name)
+        ]
+
+    @property
+    def available(self) -> bool:
+        return not self.missing_packages
+
+    def load(self) -> tuple[ModuleType, ModuleType]:
+        missing = self.missing_packages
+        if missing:
+            raise RuntimeError(
+                "FaceManager backend unavailable; install optional dependencies: "
+                + ", ".join(missing)
+            )
+        if self._numpy is None:
+            self._numpy = importlib.import_module("numpy")
+        if self._face_recognition is None:
+            self._face_recognition = importlib.import_module("face_recognition")
+        return self._face_recognition, self._numpy
+
+
+_FACE_BACKEND = _FaceBackend()
 class FaceManager(BaseManager):
     COMPONENT_ID = "vision.face_manager"
     NAME = "FaceManager"
@@ -43,30 +70,24 @@ class FaceManager(BaseManager):
         )
 
     @property
-    def backend_available(self):
-        return face_recognition is not None and np is not None
+    def backend_available(self) -> bool:
+        return _FACE_BACKEND.available
 
-    def _require_backend(self):
-        if self.backend_available:
-            return
-        missing = []
-        if face_recognition is None:
-            missing.append("face_recognition")
-        if np is None:
-            missing.append("numpy")
-        raise RuntimeError(
-            "FaceManager backend unavailable; install optional dependencies: "
-            + ", ".join(missing)
-        )
+    @property
+    def missing_optional_dependencies(self) -> list[str]:
+        return _FACE_BACKEND.missing_packages
+
+    def _require_backend(self) -> tuple[ModuleType, ModuleType]:
+        return _FACE_BACKEND.load()
 
     def get_status(self):
         status = super().get_status()
         status["backend_available"] = self.backend_available
         status["optional_dependencies"] = {
-            "face_recognition": face_recognition is not None,
-            "numpy": np is not None,
-            "cv2": cv2 is not None,
+            name: _FACE_BACKEND.package_available(name)
+            for name in ("numpy", "face_recognition", "face_recognition_models")
         }
+        status["missing_optional_dependencies"] = self.missing_optional_dependencies
         return status
 
     def register_face(
@@ -75,7 +96,7 @@ class FaceManager(BaseManager):
         image_path,
         profile_name="default"
     ):
-        self._require_backend()
+        face_recognition, _ = self._require_backend()
         image = face_recognition.load_image_file(
             image_path
         )
@@ -197,7 +218,7 @@ class FaceManager(BaseManager):
         image_path,
         tolerance=0.6
     ):
-        self._require_backend()
+        face_recognition, np = self._require_backend()
         image = face_recognition.load_image_file(
             image_path
         )
