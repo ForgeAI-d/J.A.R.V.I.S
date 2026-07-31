@@ -56,7 +56,7 @@ class BootLoader(BaseKernelComponent):
         # Infrastructure services must be discovered before application managers
         # so constructor injection can resolve dependencies deterministically.
         "database",
-        "vision", "voice", "security", "automation", "learning", "plugins",
+        "policy", "vision", "voice", "security", "automation", "learning", "plugins",
         "identity", "memory", "communication", "devices", "events", "permissions",
     )
 
